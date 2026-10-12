@@ -1,298 +1,147 @@
-import { useState } from 'react';
-import { Menu, X, ArrowRight, Plane, ChevronRight, ShieldCheck, Sparkles, Globe } from 'lucide-react';
+import React, { useState } from 'react';
+import {
+  ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, CheckCircle2,
+  ChevronDown, ChevronLeft, ChevronRight, Clock3, CreditCard, Facebook,
+  Globe2, Headphones, Instagram, Luggage, Mail, MapPin, Menu, Plane,
+  PlaneLanding, PlaneTakeoff, Search, ShieldCheck, Smartphone, Sparkles,
+  Ticket, Users, X, Youtube, ArrowLeftRight, Bell, HeartHandshake,
+  BriefcaseBusiness, ExternalLink, Phone, Info
+} from 'lucide-react';
 import bimanLogo from './assets/image.png';
 
+const OFFICIAL = 'https://www.biman-airlines.com/';
+const VIDEO = 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_091828_e240eb17-6edc-4129-ad9d-98678e3fd238.mp4';
+const cities = ['Dhaka (DAC)', 'Chattogram (CGP)', 'Sylhet (ZYL)', 'Cox’s Bazar (CXB)', 'Saidpur (SPD)', 'Jashore (JSR)', 'Rajshahi (RJH)', 'Barishal (BZL)', 'Kolkata (CCU)', 'Delhi (DEL)', 'Bangkok (BKK)', 'Kathmandu (KTM)', 'Kuala Lumpur (KUL)', 'Singapore (SIN)', 'Dubai (DXB)', 'Doha (DOH)', 'Jeddah (JED)', 'London (LHR)', 'Rome (FCO)', 'Toronto (YYZ)', 'Tokyo Narita (NRT)'];
+const destinations = [
+  { city: 'Bangkok', country: 'Thailand', image: 'https://images.unsplash.com/photo-1508004680771-708b02aabdc0?w=900&q=85', tag: 'City escapes' },
+  { city: 'Kathmandu', country: 'Nepal', image: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=900&q=85', tag: 'Mountains & culture' },
+  { city: 'London', country: 'United Kingdom', image: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?w=900&q=85', tag: 'Iconic landmarks' },
+  { city: 'Dubai', country: 'United Arab Emirates', image: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=900&q=85', tag: 'Urban adventures' },
+];
+const services = [
+  { icon: Luggage, title: 'Baggage information', desc: 'Review baggage rules and prepare your bags before you fly.' },
+  { icon: HeartHandshake, title: 'Special assistance', desc: 'Find guidance for passengers who need extra travel support.' },
+  { icon: Ticket, title: 'Changes & refunds', desc: 'Explore ticket changes, refund requests, and related policies.' },
+  { icon: ShieldCheck, title: 'Travel advisories', desc: 'Check important guidance and entry requirements before departure.' },
+];
+const faq = [
+  { q: 'How can I book a Biman flight?', a: 'Use the Book Flight option to continue to Biman Bangladesh Airlines’ official website and complete your reservation securely.' },
+  { q: 'When is online check-in available?', a: 'Biman states that online check-in opens 24 hours before departure and closes 3 hours before domestic flights or 4 hours before international flights. Always verify current rules before travel.' },
+  { q: 'Can I manage or change my booking?', a: 'Visit the official Manage My Trip service. Changes and refunds depend on the fare and ticket conditions.' },
+  { q: 'Where can I check my baggage allowance?', a: 'Consult Biman’s official baggage information, because allowances and restrictions can differ by itinerary and ticket.' },
+];
+
+function Brand({ light = false }) {
+  return <a href="#home" className="flex items-center gap-3 shrink-0" aria-label="Biman Bangladesh Airlines home">
+    <img src={bimanLogo} alt="Biman Bangladesh Airlines logo" className="h-11 w-11 rounded-full object-contain bg-white" />
+    <span className={`leading-tight ${light ? 'text-white' : 'text-slate-900'}`}>
+      <strong className="block text-xl font-extrabold tracking-tight">Biman</strong>
+      <span className={`block text-[11px] tracking-wide ${light ? 'text-white/70' : 'text-slate-500'}`}>BANGLADESH AIRLINES</span>
+    </span>
+  </a>;
+}
+function SectionTitle({ eyebrow, title, subtitle, center = false }) {
+  return <div className={center ? 'mx-auto max-w-2xl text-center' : 'max-w-2xl'}>
+    <div className="mb-3 text-xs font-bold uppercase tracking-[.22em] text-emerald-700">{eyebrow}</div>
+    <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-slate-900 leading-tight">{title}</h2>
+    {subtitle && <p className="mt-4 leading-7 text-slate-600">{subtitle}</p>}
+  </div>;
+}
+function Go({ children, className = '', href = OFFICIAL, ...props }) {
+  return <a {...props} href={href} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center justify-center gap-2 ${className}`}>{children}</a>;
+}
 export default function App() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [bookingModalOpen, setBookingModalOpen] = useState(false);
-
-  return (
-    <div className="min-h-screen bg-gray-50 font-['Inter',sans-serif] antialiased text-gray-900 selection:bg-[#202A36] selection:text-white">
-      {/* Hero Section Container */}
-      <section id="start" className="relative min-h-screen w-full overflow-hidden">
-        {/* Background Video */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none scale-105 transition-transform duration-1000"
-        >
-          <source
-            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260328_091828_e240eb17-6edc-4129-ad9d-98678e3fd238.mp4"
-            type="video/mp4"
-          />
-          Your browser does not support the video tag.
-        </video>
-
-        {/* Gradient Overlay for subtle readability */}
-        <div className="absolute inset-0 bg-gradient-to-b from-white/30 via-transparent to-white/20 pointer-events-none z-0" />
-
-        {/* Content Wrapper */}
-        <div className="relative z-10 min-h-screen flex flex-col justify-between">
-          
-          {/* Navigation Bar */}
-          <header className="w-full">
-            <nav className="max-w-7xl mx-auto px-6 sm:px-8 py-6 flex items-center justify-between">
-              {/* Brand Logo */}
-              <a 
-                href="#" 
-                className="flex items-center gap-2 group transition-transform duration-200 active:scale-95"
-              >
-                <img
-                  src={bimanLogo}
-                  alt=""
-                  className="h-10 w-10 rounded-full object-contain"
-                />
-                <span className="flex flex-col text-gray-900 tracking-tight">
-                  <span className="text-xl font-semibold leading-tight">Biman</span>
-                  <span className="text-xs font-medium leading-tight">Bangladesh Airlines</span>
-                </span>
-              </a>
-
-              {/* Desktop Menu */}
-              <div className="hidden md:flex items-center space-x-8 lg:space-x-10">
-                {['Start', 'Story', 'Rates', 'Benefits', 'FAQ'].map((item) => (
-                  <a
-                    key={item}
-                    href={`#${item.toLowerCase()}`}
-                    className="text-gray-900 font-medium hover:text-gray-700 transition-colors text-sm tracking-wide relative after:content-[''] after:absolute after:bottom-[-4px] after:left-0 after:w-0 after:h-[2px] after:bg-[#202A36] hover:after:w-full after:transition-all after:duration-300"
-                  >
-                    {item}
-                  </a>
-                ))}
-              </div>
-
-              {/* Mobile Menu Toggle Button */}
-              <div className="md:hidden flex items-center">
-                <button
-                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                  className="p-2 rounded-xl text-gray-900 hover:bg-black/5 transition-colors focus:outline-none focus:ring-2 focus:ring-[#202A36]/20"
-                  aria-label="Toggle navigation menu"
-                >
-                  {mobileMenuOpen ? (
-                    <X className="w-6 h-6" />
-                  ) : (
-                    <Menu className="w-6 h-6" />
-                  )}
-                </button>
-              </div>
-            </nav>
-
-            {/* Mobile Dropdown Menu */}
-            {mobileMenuOpen && (
-              <div className="md:hidden px-6 pt-2 pb-4">
-                <div className="bg-white/95 backdrop-blur-md rounded-2xl shadow-xl p-6 border border-white/40 flex flex-col space-y-4 animate-slide-in-from-top">
-                  {['Start', 'Story', 'Rates', 'Benefits', 'FAQ'].map((item) => (
-                    <a
-                      key={item}
-                      href={`#${item.toLowerCase()}`}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="text-gray-900 font-medium hover:text-gray-600 transition-colors py-2 px-3 rounded-lg hover:bg-gray-100/50 flex items-center justify-between"
-                    >
-                      <span>{item}</span>
-                      <ChevronRight className="w-4 h-4 text-gray-400" />
-                    </a>
-                  ))}
-                  <div className="pt-2 border-t border-gray-100 flex flex-col gap-2">
-                    <button
-                      onClick={() => {
-                        setMobileMenuOpen(false);
-                        setBookingModalOpen(true);
-                      }}
-                      className="w-full py-3 rounded-full text-white bg-[#202A36] hover:bg-[#1a2229] font-medium text-center transition-colors shadow-md text-sm"
-                    >
-                      Book Flight
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-          </header>
-
-          {/* Hero Content Area */}
-          <main className="flex-1 flex items-center justify-center text-center px-4 sm:px-6 pointer-events-none">
-            <div className="max-w-4xl mx-auto flex flex-col items-center pointer-events-auto">
-              
-              {/* Small Uppercase Tagline */}
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-black/5 backdrop-blur-sm border border-black/5 mb-4">
-                <Sparkles className="w-3.5 h-3.5 text-gray-600" />
-                <span className="text-sm font-semibold text-gray-600 tracking-wider uppercase">
-                  PRIVATE JETS
-                </span>
-              </div>
-
-              {/* Overlapping Two-Line Heading */}
-              <div className="flex flex-col items-center justify-center my-1 select-none">
-                <h1 className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-normal leading-none tracking-tighter transition-all duration-300">
-                  <span className="block text-gray-500">Premium.</span>
-                  <span className="block -mt-3 sm:-mt-4 md:-mt-5 text-[#202A36]">Accessible.</span>
-                </h1>
-              </div>
-
-              {/* Subtitle */}
-              <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl font-normal tracking-tight px-2 leading-relaxed">
-                Your dedication deserves recognition.
-              </p>
-
-              {/* Action Buttons */}
-              <div className="flex items-center justify-center gap-4 flex-wrap sm:flex-nowrap">
-                <button
-                  onClick={() => {
-                    const target = document.getElementById('benefits');
-                    if (target) target.scrollIntoView({ behavior: 'smooth' });
-                  }}
-                  className="px-6 py-2.5 rounded-full bg-gray-300 text-gray-800 font-medium hover:bg-gray-400 transition-colors shadow-sm hover:shadow active:scale-95 duration-200 text-sm sm:text-base cursor-pointer"
-                >
-                  Discover
-                </button>
-                <button
-                  onClick={() => setBookingModalOpen(true)}
-                  className="px-6 py-2.5 rounded-full text-white font-medium bg-[#202A36] hover:bg-[#1a2229] transition-colors shadow-md hover:shadow-lg active:scale-95 duration-200 text-sm sm:text-base flex items-center gap-2 cursor-pointer"
-                >
-                  <span>Book Now</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-
-            </div>
-          </main>
-
-          {/* Footer Highlights */}
-          <footer id="benefits" className="w-full pb-8 pt-4 px-6">
-            <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-center md:justify-between gap-4 text-xs sm:text-sm text-gray-600 bg-white/40 backdrop-blur-md rounded-2xl p-4 border border-white/60 shadow-sm">
-              <div className="flex items-center gap-2 px-2">
-                <Globe className="w-4 h-4 text-[#202A36]" />
-                <span className="font-medium text-gray-800">5,000+ Global Destinations</span>
-              </div>
-              <div className="hidden sm:flex items-center gap-2 px-2 border-l border-gray-300/60">
-                <ShieldCheck className="w-4 h-4 text-[#202A36]" />
-                <span className="font-medium text-gray-800">ARG/US Platinum Safety Rating</span>
-              </div>
-              <div className="flex items-center gap-2 px-2 border-l border-gray-300/60">
-                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="font-medium text-gray-800">Instant Airport Fleet Dispatch</span>
-              </div>
-            </div>
-          </footer>
-
-        </div>
-      </section>
-
-      <section id="story" className="scroll-mt-8 bg-white px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-4xl text-center">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">Biman Bangladesh Airlines</p>
-          <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-5xl">A more considered way to travel.</h2>
-          <p className="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-gray-600 sm:text-lg">
-            Plan your private flight around the journey you have in mind. Share your route and travel details to begin a quote request.
-          </p>
-        </div>
-      </section>
-
-      <section id="rates" className="scroll-mt-8 bg-gray-50 px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-4xl rounded-3xl border border-gray-200 bg-white p-8 text-center shadow-sm sm:p-12">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gray-500">Rates</p>
-          <h2 className="text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Get a quote for your itinerary.</h2>
-          <p className="mx-auto mt-4 max-w-2xl leading-relaxed text-gray-600">
-            Pricing depends on the details of your trip. Send a quote request with your route, date, and passenger count.
-          </p>
-          <button
-            onClick={() => setBookingModalOpen(true)}
-            className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#202A36] px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-[#1a2229]"
-          >
-            Request a quote <ArrowRight className="h-4 w-4" />
-          </button>
-        </div>
-      </section>
-
-      <section id="faq" className="scroll-mt-8 bg-white px-6 py-20 sm:py-28">
-        <div className="mx-auto max-w-3xl">
-          <h2 className="mb-8 text-center text-3xl font-semibold tracking-tight text-gray-900 sm:text-4xl">Frequently asked questions</h2>
-          <details className="group border-b border-gray-200 py-5">
-            <summary className="cursor-pointer list-none font-medium text-gray-900 marker:hidden">
-              What details should I include in a quote request?
-              <span className="float-right text-gray-500 group-open:rotate-90">›</span>
-            </summary>
-            <p className="mt-3 leading-relaxed text-gray-600">
-              Include your departure and destination, preferred date, passenger count, and a contact email so the request has the trip details needed.
-            </p>
-          </details>
-          <details className="group border-b border-gray-200 py-5">
-            <summary className="cursor-pointer list-none font-medium text-gray-900 marker:hidden">
-              Where do I submit a flight request?
-              <span className="float-right text-gray-500 group-open:rotate-90">›</span>
-            </summary>
-            <p className="mt-3 leading-relaxed text-gray-600">
-              Select “Book Now” or “Request a quote” to open the flight request form.
-            </p>
-          </details>
-        </div>
-      </section>
-
-      {/* Flight Booking Modal */}
-      {bookingModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 shadow-2xl relative border border-gray-100">
-            <button
-              onClick={() => setBookingModalOpen(false)}
-              className="absolute top-5 right-5 p-2 rounded-full text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors"
-              aria-label="Close modal"
-            >
-              <X className="w-5 h-5" />
-            </button>
-
-            <div className="flex items-center gap-3 mb-6">
-              <div className="w-10 h-10 rounded-full bg-[#202A36] text-white flex items-center justify-center">
-                <Plane className="w-5 h-5 -rotate-45" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">Request Flight Quote</h3>
-                <p className="text-xs text-gray-500">Fast 15-minute response time guaranteed</p>
-              </div>
-            </div>
-
-            <form onSubmit={(e) => { e.preventDefault(); setBookingModalOpen(false); alert("Thank you! Your flight specialist will contact you shortly."); }} className="space-y-4">
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Departure & Destination</label>
-                <div className="grid grid-cols-2 gap-2">
-                  <input type="text" placeholder="From (e.g. TEB)" required className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#202A36]/30" />
-                  <input type="text" placeholder="To (e.g. VNY)" required className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#202A36]/30" />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Date</label>
-                  <input type="date" required className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#202A36]/30" />
-                </div>
-                <div>
-                  <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Passengers</label>
-                  <select className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#202A36]/30">
-                    <option>1 - 4 Guests</option>
-                    <option>5 - 8 Guests</option>
-                    <option>9 - 14 Guests</option>
-                    <option>15+ VIP Group</option>
-                  </select>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Contact Details</label>
-                <input type="email" placeholder="Your Email Address" required className="w-full px-3 py-2.5 rounded-xl border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#202A36]/30" />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full py-3 mt-2 rounded-xl text-white font-medium text-sm transition-colors shadow-md hover:shadow-lg flex items-center justify-center gap-2 cursor-pointer"
-                style={{ backgroundColor: '#202A36' }}
-              >
-                <span>Submit Flight Request</span>
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </form>
-          </div>
-        </div>
-      )}
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [tab, setTab] = useState('book');
+  const [trip, setTrip] = useState('round');
+  const [from, setFrom] = useState('Dhaka (DAC)');
+  const [to, setTo] = useState('London (LHR)');
+  const [depart, setDepart] = useState('');
+  const [ret, setRet] = useState('');
+  const [passengers, setPassengers] = useState('1');
+  const [cabin, setCabin] = useState('Economy');
+  const [notice, setNotice] = useState('');
+  const [expanded, setExpanded] = useState(0);
+  const [subscribeEmail, setSubscribeEmail] = useState('');
+  const [subscriptionNote, setSubscriptionNote] = useState('');
+  const [selectedDest, setSelectedDest] = useState(0);
+  const [reference, setReference] = useState('');
+  const [surname, setSurname] = useState('');
+  const [flightNo, setFlightNo] = useState('');
+  const [statusDate, setStatusDate] = useState('');
+  const today = new Date().toLocaleDateString('en-CA');
+  const nav = [['Destinations', '#destinations'], ['Our services', '#services'], ['About Biman', '#about'], ['Travel info', '#travel-info'], ['FAQs', '#faq']];
+  const flipAirports = () => { setFrom(to); setTo(from); };
+  const goOfficial = () => window.open(OFFICIAL, '_blank', 'noopener,noreferrer');
+  const submitBooking = (e) => {
+    e.preventDefault();
+    if (from === to) return setNotice('Departure and destination must be different.');
+    if (trip === 'round' && depart && ret && ret < depart) return setNotice('Return date cannot be before departure date.');
+    setNotice('Your trip details are ready. Continue on Biman’s official website to search live fares and complete a booking. This demo does not transfer search fields or reserve seats.');
+  };
+  return <div className="min-h-screen bg-white text-slate-900 font-sans selection:bg-emerald-200">
+    <div className="bg-[#073d35] text-white text-xs sm:text-sm">
+      <div className="mx-auto max-w-7xl px-5 py-2.5 flex items-center justify-between gap-3">
+        <div className="flex items-center gap-2 min-w-0"><Bell size={14} className="shrink-0 text-amber-300" /><span className="truncate">Travel updates and passenger information</span><Go className="hidden sm:inline-flex text-white font-semibold underline underline-offset-4" >View updates <ArrowUpRight size={13}/></Go></div>
+        <div className="hidden md:flex items-center gap-5"><span className="flex items-center gap-1.5"><Phone size={13}/> 13636 (Bangladesh)</span><span className="flex items-center gap-1.5"><Globe2 size={13}/> EN</span></div>
+      </div>
     </div>
-  );
+    <div className="relative" id="home">
+      <div className="absolute inset-0 h-[810px] lg:h-[810px] overflow-hidden bg-[#c8d7db] pointer-events-none">
+        <video autoPlay muted loop playsInline className="h-full w-full object-cover" poster=""><source src={VIDEO} type="video/mp4" /></video>
+        <div className="absolute inset-0 bg-gradient-to-r from-[#051f24]/80 via-[#092b32]/50 to-[#123b44]/15" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#05272b]/70 via-transparent to-black/15" />
+      </div>
+      <header className="relative z-30 border-b border-white/20 bg-white/95 backdrop-blur-md">
+        <div className="mx-auto max-w-7xl px-5 flex min-h-20 items-center justify-between gap-6">
+          <Brand />
+          <nav className="hidden lg:flex items-center gap-7">{nav.map(([label, href]) => <a key={label} href={href} className="text-sm font-semibold text-slate-700 hover:text-emerald-700 transition">{label}</a>)}</nav>
+          <div className="hidden md:flex items-center gap-3"><Go className="rounded-full border border-emerald-800 px-5 py-2.5 text-sm font-semibold text-emerald-900 hover:bg-emerald-50">Manage booking</Go><a href="#booking" className="rounded-full bg-[#08745a] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#075b48]">Book a flight <ArrowRight size={16} className="inline ml-1"/></a></div>
+          <button className="lg:hidden p-2 rounded-lg hover:bg-slate-100" onClick={() => setMobileOpen(!mobileOpen)} aria-label="Toggle menu">{mobileOpen ? <X/> : <Menu/>}</button>
+        </div>
+        {mobileOpen && <nav className="lg:hidden border-t bg-white px-5 py-4 space-y-2">{nav.map(([label, href]) => <a key={label} href={href} onClick={() => setMobileOpen(false)} className="block rounded-lg p-3 text-sm font-semibold hover:bg-emerald-50">{label}</a>)}<a href="#booking" onClick={() => setMobileOpen(false)} className="block rounded-lg bg-emerald-700 p-3 text-white font-semibold">Book a flight</a></nav>}
+      </header>
+      <section className="relative z-10 mx-auto max-w-7xl px-5 pt-24 pb-16 sm:pt-32 lg:pt-36 lg:pb-20">
+        <div className="max-w-2xl text-white">
+          <span className="mb-5 inline-flex gap-2 items-center rounded-full border border-white/35 bg-white/10 px-4 py-2 text-xs font-semibold tracking-[.16em] uppercase backdrop-blur-sm"><Sparkles size={15} className="text-amber-300"/> Your journey begins here</span>
+          <h1 className="text-5xl sm:text-6xl lg:text-[78px] font-bold tracking-tight leading-[1.03]">Connecting<br/>Bangladesh to <span className="text-[#bde7ce]">the world.</span></h1>
+          <p className="mt-6 max-w-lg text-base sm:text-lg text-white/90 leading-8">Discover new places, reconnect with loved ones, and travel confidently with Biman Bangladesh Airlines.</p>
+          <div className="mt-8 flex flex-wrap gap-3"><a href="#booking" className="flex items-center gap-2 bg-white text-emerald-950 rounded-full px-6 py-3.5 font-bold hover:bg-emerald-50">Explore flights <ArrowRight size={18}/></a><a href="#destinations" className="rounded-full border border-white/70 px-6 py-3.5 font-semibold text-white hover:bg-white/15">Discover destinations</a></div>
+        </div>
+      </section>
+    </div>
+    <section id="booking" className="relative z-20 px-5 -mt-4 pb-20 scroll-mt-24">
+      <div className="mx-auto max-w-7xl rounded-[28px] bg-white shadow-[0_25px_75px_rgba(15,39,41,.17)] border border-slate-100 overflow-hidden">
+        <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-slate-100">
+          {[['book',PlaneTakeoff,'Book flights'],['manage',Ticket,'Manage trip'],['checkin',BadgeCheck,'Web check-in'],['status',Clock3,'Flight status']].map(([value, Icon, label]) => <button key={value} onClick={() => {setTab(value); setNotice('');}} className={`flex items-center justify-center gap-2 px-3 py-5 text-xs sm:text-sm font-bold transition border-b-[3px] ${tab === value ? 'border-emerald-700 text-emerald-800 bg-emerald-50/60' : 'border-transparent text-slate-500 hover:bg-slate-50'}`}><Icon size={19}/><span>{label}</span></button>)}
+        </div>
+        <div className="p-5 sm:p-8">
+          {tab === 'book' && <form onSubmit={submitBooking}>
+            <div className="flex flex-wrap justify-between gap-4 items-center mb-6"><div className="flex gap-5 text-sm font-semibold">{[['round','Round trip'],['one','One way']].map(([value,label]) => <label key={value} className="inline-flex items-center gap-2 cursor-pointer"><input type="radio" checked={trip === value} onChange={() => setTrip(value)} className="accent-emerald-700"/>{label}</label>)}</div><span className="text-xs text-slate-500">Flight availability and prices are confirmed on the official website.</span></div>
+            <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-[1.15fr_1.15fr_1fr_1fr_.8fr] items-end">
+              <div className="relative"><label className="block text-xs font-bold text-slate-600 mb-2">From</label><div className="relative"><PlaneTakeoff size={18} className="absolute top-3.5 left-3 text-emerald-700"/><select aria-label="Departure airport" value={from} onChange={e=>setFrom(e.target.value)} className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-8 text-sm font-semibold focus:border-emerald-600 focus:outline-none">{cities.map(c=><option key={c}>{c}</option>)}</select></div><button type="button" onClick={flipAirports} title="Swap airports" aria-label="Swap airports" className="absolute -right-5 bottom-2.5 z-10 p-2 rounded-full shadow bg-emerald-700 text-white hover:bg-emerald-800"><ArrowLeftRight size={15}/></button></div>
+              <div><label className="block text-xs font-bold text-slate-600 mb-2">To</label><div className="relative"><PlaneLanding size={18} className="absolute top-3.5 left-3 text-emerald-700"/><select aria-label="Destination airport" value={to} onChange={e=>setTo(e.target.value)} className="w-full appearance-none rounded-xl border border-slate-200 bg-white py-3 pl-10 pr-8 text-sm font-semibold focus:border-emerald-600 focus:outline-none">{cities.map(c=><option key={c}>{c}</option>)}</select></div></div>
+              <div><label className="block text-xs font-bold text-slate-600 mb-2">Departure</label><input aria-label="Departure date" type="date" required min={today} value={depart} onChange={e=>setDepart(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm focus:border-emerald-600 focus:outline-none"/></div>
+              <div><label className="block text-xs font-bold text-slate-600 mb-2">Return</label><input aria-label="Return date" type="date" required={trip==='round'} disabled={trip==='one'} min={depart || today} value={ret} onChange={e=>setRet(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm disabled:bg-slate-100 disabled:text-slate-400 focus:border-emerald-600 focus:outline-none"/></div>
+              <div><label className="block text-xs font-bold text-slate-600 mb-2">Travelers</label><select aria-label="Number of travelers" value={passengers} onChange={e=>setPassengers(e.target.value)} className="w-full rounded-xl border border-slate-200 bg-white px-3 py-3 text-sm focus:border-emerald-600 focus:outline-none">{Array.from({length:9},(_,i)=><option key={i} value={i+1}>{i+1} {i===0?'Adult':'Travelers'}</option>)}</select></div>
+            </div>
+            <div className="mt-5 flex flex-wrap justify-between items-center gap-4"><div className="flex items-center gap-3"><span className="text-xs font-bold text-slate-600">Cabin class</span><select value={cabin} onChange={e=>setCabin(e.target.value)} className="rounded-lg border border-slate-200 px-3 py-2 text-sm"><option>Economy</option><option>Business</option></select></div><button type="submit" className="inline-flex items-center gap-3 rounded-xl bg-[#08745a] px-7 py-3.5 font-bold text-white hover:bg-[#075a47]">Continue to flight search <Search size={18}/></button></div>
+          </form>}
+          {tab === 'manage' && <div className="grid gap-5 md:grid-cols-[1fr_1fr_auto] items-end"><div><label className="block text-xs font-bold text-slate-600 mb-2">Booking reference (PNR)</label><input value={reference} onChange={e=>setReference(e.target.value)} placeholder="Enter booking reference" className="w-full border rounded-xl px-4 py-3"/></div><div><label className="block text-xs font-bold text-slate-600 mb-2">Last name</label><input value={surname} onChange={e=>setSurname(e.target.value)} placeholder="As shown on booking" className="w-full border rounded-xl px-4 py-3"/></div><button onClick={() => setNotice('Use the official Manage My Trip portal to retrieve your booking securely; these demo fields are not transmitted.')} className="rounded-xl bg-emerald-700 text-white font-bold px-6 py-3">Continue <ArrowRight size={16} className="inline"/></button></div>}
+          {tab === 'checkin' && <div className="flex flex-wrap items-center justify-between gap-5"><div><h3 className="font-bold text-xl">Check in before you arrive</h3><p className="text-sm text-slate-600 mt-2 max-w-xl">Online check-in generally opens 24 hours before departure. Verify eligibility and deadlines on Biman’s official website.</p></div><Go className="rounded-xl bg-emerald-700 px-6 py-3 text-white font-bold">Open web check-in <ArrowUpRight size={16}/></Go></div>}
+          {tab === 'status' && <div className="grid gap-5 md:grid-cols-[1fr_1fr_auto] items-end"><div><label className="block text-xs font-bold text-slate-600 mb-2">Flight number</label><input value={flightNo} onChange={e=>setFlightNo(e.target.value)} placeholder="e.g. BG305" className="w-full border rounded-xl px-4 py-3"/></div><div><label className="block text-xs font-bold text-slate-600 mb-2">Flight date</label><input type="date" value={statusDate} onChange={e=>setStatusDate(e.target.value)} className="w-full border rounded-xl px-4 py-3"/></div><button onClick={() => setNotice('Please check live flight status on Biman’s official website; this demo cannot retrieve live operational data.')} className="rounded-xl bg-emerald-700 text-white font-bold px-6 py-3">Check status <ArrowRight size={16} className="inline"/></button></div>}
+          {notice && <div role="status" className="mt-5 flex flex-wrap items-center justify-between gap-3 bg-emerald-50 text-emerald-900 rounded-xl p-4 text-sm"><span className="max-w-3xl">{notice}</span><Go className="font-bold underline underline-offset-4">Open official Biman website <ArrowUpRight size={15}/></Go></div>}
+        </div>
+      </div>
+    </section>
+    <section id="destinations" className="py-20 bg-[#f6f9f7] scroll-mt-20"><div className="mx-auto max-w-7xl px-5"><div className="flex flex-wrap justify-between items-end gap-6 mb-10"><SectionTitle eyebrow="Explore the world" title="Where will you go next?" subtitle="From vibrant cities to unforgettable cultural experiences, find inspiration for your next journey."/><Go className="font-bold text-emerald-800 hover:underline">Explore all destinations <ArrowUpRight size={17}/></Go></div><div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">{destinations.map((d,i)=><button key={d.city} onClick={() => {setSelectedDest(i); setTo(d.city === 'Bangkok'?'Bangkok (BKK)':d.city === 'Kathmandu'?'Kathmandu (KTM)':d.city === 'London'?'London (LHR)':'Dubai (DXB)'); document.getElementById('booking')?.scrollIntoView({behavior:'smooth'}); setTab('book');}} className="group relative h-[360px] overflow-hidden rounded-[24px] text-left bg-slate-300"><img src={d.image} alt={`${d.city}, ${d.country}`} loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-700 group-hover:scale-110"/><div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-transparent to-transparent"/><span className="absolute top-5 left-5 rounded-full bg-white/95 px-3 py-1.5 text-xs font-bold text-emerald-900">{d.tag}</span><span className="absolute bottom-6 left-6 right-6 flex justify-between items-end text-white"><span><span className="block text-xs text-white/80">{d.country}</span><strong className="block mt-1 text-3xl">{d.city}</strong></span><span className="rounded-full bg-white/20 p-3 backdrop-blur"><ArrowUpRight size={20}/></span></span></button>)}</div><p className="mt-5 text-xs text-slate-500">Destination cards are travel inspiration, not live schedules or fare quotations.</p></div></section>
+    <section id="services" className="py-24 scroll-mt-20"><div className="mx-auto max-w-7xl px-5"><SectionTitle eyebrow="Travel made simple" title="Everything you need for the journey" subtitle="Plan ahead with essential passenger services and travel guidance."/><div className="mt-10 grid gap-5 md:grid-cols-2 lg:grid-cols-4">{services.map(({icon:Icon,title,desc})=><Go key={title} className="group flex-col !items-start !justify-between text-left rounded-2xl border border-slate-200 p-7 min-h-[235px] hover:shadow-xl hover:border-emerald-200 transition"><span className="rounded-2xl bg-emerald-50 p-4 text-emerald-800"><Icon size={26}/></span><span><strong className="mt-5 block text-lg text-slate-900">{title}</strong><span className="mt-2 block text-sm leading-6 text-slate-500">{desc}</span></span><ArrowUpRight size={18} className="text-emerald-800 mt-3"/></Go>)}</div></div></section>
+    <section className="bg-[#063e35] text-white py-20"><div className="mx-auto max-w-7xl px-5 grid gap-10 lg:grid-cols-[1.1fr_1fr] items-center"><div><span className="text-xs font-bold tracking-[.2em] uppercase text-emerald-200">Why fly Biman</span><h2 className="mt-4 text-4xl md:text-5xl font-bold tracking-tight leading-tight">A familiar welcome, wherever you're headed.</h2><p className="mt-5 max-w-lg leading-8 text-emerald-50/80">Whether you're traveling for family, business, or discovery, enjoy a journey grounded in Bangladeshi hospitality.</p><Go className="mt-8 bg-white rounded-full px-6 py-3 font-bold text-emerald-900">Explore Biman <ArrowRight size={17}/></Go></div><div className="grid gap-4 sm:grid-cols-2">{[[Globe2,'International reach','Explore destinations across Asia, Europe, the Middle East, and beyond.'],[HeartHandshake,'Bangladeshi hospitality','Experience the warmth of Bangladesh throughout your journey.'],[Smartphone,'Digital convenience','Access bookings, online check-in, and flight updates.'],[Headphones,'Passenger support','Find travel information and support when you need it.']].map(([Icon,title,copy])=><div key={title} className="rounded-2xl border border-white/15 bg-white/10 p-6 backdrop-blur"><Icon className="text-emerald-200" size={25}/><h3 className="mt-5 font-bold text-lg">{title}</h3><p className="mt-2 text-sm leading-6 text-emerald-50/75">{copy}</p></div>)}</div></div></section>
+    <section id="about" className="py-24 scroll-mt-20"><div className="mx-auto max-w-7xl px-5 grid gap-12 lg:grid-cols-2 items-center"><div className="overflow-hidden rounded-[30px] bg-slate-100 min-h-[380px]"><img src="https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=1200&q=85" alt="Airplane wing above the clouds" loading="lazy" className="w-full h-full min-h-[380px] object-cover"/></div><div><SectionTitle eyebrow="Our story" title="Proudly connecting people and places" subtitle="As Bangladesh's national flag carrier, Biman Bangladesh Airlines has a special connection to journeys that bring people together."/><p className="mt-5 text-slate-600 leading-8">From visits home to new opportunities abroad, every flight can be part of a bigger story. Explore our network, fleet information, and airline updates through Biman's official channels.</p><Go className="mt-7 rounded-full bg-emerald-700 px-6 py-3 font-bold text-white">Learn about Biman <ArrowUpRight size={17}/></Go></div></div></section>
+    <section id="travel-info" className="bg-[#f6f9f7] py-20 scroll-mt-20"><div className="mx-auto max-w-7xl px-5"><div className="flex items-end justify-between gap-5 flex-wrap"><SectionTitle eyebrow="Before you fly" title="Travel well prepared" subtitle="Useful reminders for a smoother airport experience."/><Go className="font-bold text-emerald-800">All travel information <ArrowUpRight size={17}/></Go></div><div className="mt-10 grid gap-5 md:grid-cols-3">{[[CalendarDays,'Before departure','Confirm flight timings, travel documents, visa requirements, and entry rules.'],[Luggage,'Pack confidently','Review baggage allowance and restricted items for your itinerary.'],[BadgeCheck,'Check in online','Use the official web check-in service if your reservation is eligible.']].map(([Icon,title,copy],i)=><div key={title} className="rounded-2xl bg-white p-7 border border-slate-100"><span className="text-sm font-extrabold text-emerald-700">0{i+1}</span><Icon size={29} className="mt-5 text-emerald-800"/><h3 className="mt-5 text-xl font-bold">{title}</h3><p className="mt-3 text-sm leading-7 text-slate-600">{copy}</p></div>)}</div></div></section>
+    <section className="py-20"><div className="mx-auto max-w-7xl px-5 grid lg:grid-cols-[1.3fr_1fr] gap-8 items-center rounded-[30px] bg-[#e9f5ef] p-8 sm:p-14"><div><div className="text-xs font-bold uppercase tracking-[.2em] text-emerald-700">Biman on your phone</div><h2 className="mt-4 text-3xl sm:text-4xl font-bold tracking-tight">Your journey, closer at hand.</h2><p className="mt-4 text-slate-600 leading-7">Explore Biman's mobile app for trip management, online check-in, and flight updates. Check the official website for download links.</p><Go className="mt-6 inline-flex rounded-full bg-emerald-700 text-white px-6 py-3 font-bold">Explore mobile app <Smartphone size={17}/></Go></div><div className="flex justify-center"><div className="w-52 h-80 border-[10px] border-slate-900 rounded-[36px] bg-white shadow-2xl p-5 flex flex-col items-center justify-center text-center"><img src={bimanLogo} alt="Biman logo" className="h-20 w-20 object-contain"/><div className="mt-5 font-extrabold text-xl text-emerald-950">Biman</div><div className="mt-2 text-xs text-slate-500">Plan. Fly. Explore.</div><div className="mt-7 h-2 rounded bg-emerald-700 w-full"/><div className="mt-2 h-2 rounded bg-slate-100 w-3/4"/></div></div></div></section>
+    <section id="faq" className="py-20 bg-[#f8faf9] scroll-mt-20"><div className="mx-auto max-w-3xl px-5"><SectionTitle eyebrow="Need help?" title="Frequently asked questions" center/><div className="mt-10 divide-y divide-slate-200 border-y border-slate-200">{faq.map((f,i)=><div key={f.q}><button aria-expanded={expanded===i} onClick={()=>setExpanded(expanded===i?-1:i)} className="w-full py-5 flex items-center justify-between gap-5 text-left font-bold text-slate-900"><span>{f.q}</span><ChevronDown size={19} className={`text-emerald-800 transition ${expanded===i?'rotate-180':''}`}/></button>{expanded===i && <p className="pb-6 text-slate-600 leading-7 text-sm">{f.a}</p>}</div>)}</div><div className="mt-7 text-center text-sm text-slate-600">Still have a question? <Go className="font-bold text-emerald-800 underline underline-offset-4" href="https://www.biman-airlines.com/faq">Visit Biman FAQs <ArrowUpRight size={14}/></Go></div></div></section>
+    <section className="bg-[#0c5548] py-14"><div className="mx-auto max-w-7xl px-5 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6 text-white"><div><h2 className="text-2xl sm:text-3xl font-bold">Ready to take off?</h2><p className="mt-2 text-white/80">Explore the world with Biman Bangladesh Airlines.</p></div><Go className="rounded-full bg-white text-emerald-950 px-7 py-3.5 font-bold">Book your next journey <ArrowRight size={18}/></Go></div></section>
+    <footer className="bg-[#062b27] text-white"><div className="mx-auto max-w-7xl px-5 py-16 grid gap-10 sm:grid-cols-2 lg:grid-cols-[1.35fr_1fr_1fr_1fr]"><div><Brand light/><p className="mt-5 max-w-xs text-sm text-white/65 leading-7">Bangladesh's national flag carrier. Connecting journeys, people, and places.</p><p className="mt-5 flex gap-2 text-sm text-white/75"><MapPin size={18} className="shrink-0"/> Balaka, Kurmitola, Dhaka-1229, Bangladesh</p><p className="mt-3 flex gap-2 text-sm text-white/75"><Phone size={16}/> 13636</p><Go className="mt-6 text-sm font-semibold text-emerald-200 underline underline-offset-4">Visit official website <ArrowUpRight size={16}/></Go></div><div><h3 className="font-bold mb-5">Plan your trip</h3><div className="grid gap-3 text-sm text-white/70">{['Book a flight','Manage my trip','Web check-in','Flight status','Flight schedule'].map(s=><Go key={s} className="!justify-start hover:text-white">{s}</Go>)}</div></div><div><h3 className="font-bold mb-5">Passenger services</h3><div className="grid gap-3 text-sm text-white/70">{['Baggage information','Refund requests','Travel advisories','Special assistance','Passenger rights'].map(s=><Go key={s} className="!justify-start hover:text-white">{s}</Go>)}</div></div><div><h3 className="font-bold mb-5">About & support</h3><div className="grid gap-3 text-sm text-white/70">{['About Biman','News & updates','Careers','Contact & feedback','Privacy policy'].map(s=><Go key={s} className="!justify-start hover:text-white">{s}</Go>)}</div></div></div><div className="border-t border-white/10"><div className="mx-auto max-w-7xl px-5 py-6 flex flex-col sm:flex-row justify-between gap-3 text-xs text-white/50"><span>© {new Date().getFullYear()} Biman Bangladesh Airlines — Concept landing page. Unofficial frontend demonstration.</span><span>Booking and live information are provided by the official airline website.</span></div></div></footer>
+  </div>;
 }
