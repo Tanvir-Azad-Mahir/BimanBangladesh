@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import {
   ArrowRight, ArrowUpRight, BadgeCheck, CalendarDays, CheckCircle2,
-  ChevronDown, ChevronLeft, ChevronRight, Clock3, CreditCard, Facebook,
-  Globe2, Headphones, Instagram, Luggage, Mail, MapPin, Menu, Plane,
+  ChevronDown, ChevronLeft, ChevronRight, Clock3, CreditCard,
+  Globe2, Headphones, Luggage, Mail, MapPin, Menu, Plane,
   PlaneLanding, PlaneTakeoff, Search, ShieldCheck, Smartphone, Sparkles,
-  Ticket, Users, X, Youtube, ArrowLeftRight, Bell, HeartHandshake,
+  Ticket, Users, X, ArrowLeftRight, Bell, HeartHandshake,
   BriefcaseBusiness, ExternalLink, Phone, Info
 } from 'lucide-react';
 import bimanLogo from './assets/image.png';
